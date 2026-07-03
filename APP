@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Italia 2026 🎭</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Italie 26">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?auto=format&fit=crop&w=192&h=192&q=80">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #FAF6F0 0%, #FDFBF7 50%, #F5EAE1 100%);
+            --lagoon-teal: #007A78;
+            --venetian-red: #A62B2B;
+            --st-marks-gold: #D4AF37;
+            --text-dark: #2C3E35;
+            --card-white: #FFFFFF;
+            --shadow-float: 0 12px 35px rgba(0, 0, 0, 0.05);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            padding-bottom: 90px; /* Plus d'espace pour le bouton flottant */
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* SPLASH SCREEN */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--venetian-red);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        #splash h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            animation: popIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #splash p {
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(250, 246, 240, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 40px 20px 15px 20px; /* Padding haut pour l'encoche iPhone */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--venetian-red); }
+        .settings-btn { background: none; border: none; font-size: 1.4rem; color: var(--lagoon-teal); cursor: pointer; }
+
+        /* PROGRESS BAR */
+        .progress-wrapper {
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 30px;
+            padding: 5px;
+            margin-bottom: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .progress-container { height: 14px; width: 100%; border-radius: 20px; position: relative; overflow: hidden; }
+        .progress-bar { background: linear-gradient(90deg, var(--lagoon-teal), #4FD1C5); height: 100%; width: 0%; border-radius: 20px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-text { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--lagoon-teal); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px;}
+
+        /* SEARCH & FILTERS */
+        .search-container { position: relative; margin-bottom: 5px; }
+        .search-container input { width: 100%; padding: 12px 16px 12px 40px; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.05); background: var(--card-white); font-size: 0.95rem; outline: none; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .search-container i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999; }
+
+        .filters { display: flex; overflow-x: auto; padding: 15px 20px; gap: 10px; scrollbar-width: none; }
+        .filters::-webkit-scrollbar { display: none; }
+        .filter-btn { background: var(--card-white); border: none; color: var(--text-dark); padding: 10px 22px; border-radius: 30px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: all 0.3s; }
+        .filter-btn.active { background: var(--text-dark); color: white; transform: translateY(-2px); }
+        .filter-food { background: #FFF3E0; color: #E65100; border: 1px solid #FFE0B2; }
+        .filter-food.active { background: #E65100; color: white; border-color: #E65100; }
+
+        /* CARDS */
+        .places-list { padding: 5px 20px; }
+        .place-card { background: var(--card-white); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 18px; box-shadow: var(--shadow-float); transition: all 0.4s; position: relative; border: 1px solid rgba(255,255,255,0.8); }
+        .place-card.visited { background: rgba(255, 255, 255, 0.4); border-left: 6px solid var(--lagoon-teal); transform: scale(0.98); opacity: 0.85; box-shadow: none; }
+
+        .place-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .place-main-info { display: flex; align-items: center; gap: 15px; width: 80%; }
+        .place-icon-box { width: 48px; height: 48px; background: rgba(0, 122, 120, 0.08); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--lagoon-teal); font-size: 1.3rem; flex-shrink: 0; }
+        .place-card.visited .place-icon-box { background: var(--lagoon-teal); color: white; }
+
+        .place-info h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; line-height: 1.2; }
+        .place-tag { font-size: 0.75rem; color: #778899; font-weight: 500; background: #F1F5F9; padding: 4px 8px; border-radius: 8px; display: inline-block; }
+
+        /* CHECKBOX & FAVORITE */
+        .action-corner { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .fav-btn { color: #CBD5E1; font-size: 1.3rem; cursor: pointer; transition: 0.3s; }
+        .fav-btn.active { color: #EF4444; transform: scale(1.15); }
+
+        .checkbox-wrapper input { display: none; }
+        .checkbox-custom { width: 32px; height: 32px; border: 2px solid rgba(0, 122, 120, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .checkbox-wrapper input:checked + .checkbox-custom { background: var(--lagoon-teal); border-color: var(--lagoon-teal); }
+        .checkbox-custom i { color: white; font-size: 0.9rem; display: none; }
+        .checkbox-wrapper input:checked + .checkbox-custom i { display: block; }
+
+        /* FOOTER ACTIONS */
+        .card-footer { margin-top: 18px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; }
+        .stars { display: flex; gap: 6px; }
+        .stars i { color: #E2E8F0; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+        .stars i.active { color: var(--st-marks-gold); transform: scale(1.2); }
+
+        .buttons-group { display: flex; gap: 8px; }
+        .btn-action { padding: 10px 16px; border-radius: 30px; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-map { background: #E6F4F0; color: var(--lagoon-teal); }
+        .btn-note { background: #FDF2F2; color: var(--venetian-red); }
+
+        /* EXPANSION ZONE */
+        .expansion-zone { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(0,0,0,0.08); }
+        .expansion-zone.active { display: block; animation: slideDown 0.3s ease; }
+        textarea { width: 100%; border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); padding: 15px; font-size: 0.9rem; min-height: 80px; resize: none; outline: none; margin-bottom: 12px; background: #F8FAFC; }
+        .photo-uploader { background: #F1F5F9; padding: 12px; border-radius: var(--radius-md); text-align: center; position: relative; font-size: 0.85rem; font-weight: 600; color: #475569; border: 1px dashed #CBD5E1; }
+        .photo-uploader input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .img-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: var(--radius-md); margin-top: 12px; display: none; }
+
+        /* FLOATING ACTION BUTTON (FAB) */
+        .fab { position: fixed; bottom: 30px; right: 20px; width: 65px; height: 65px; border-radius: 50%; background: var(--venetian-red); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 8px 25px rgba(166, 43, 43, 0.4); border: none; cursor: pointer; z-index: 1500; transition: transform 0.2s; }
+        .fab:active { transform: scale(0.9); }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; animation: fadeIn 0.2s ease; }
+        .modal-content { background: var(--card-white); padding: 25px; border-radius: var(--radius-lg); width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .modal-content h4 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 15px; color: var(--text-dark); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: #64748B; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #E2E8F0; background: #F8FAFC; font-size: 1rem; outline: none; }
+        
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-btn { flex: 1; padding: 14px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+        .btn-close { background: #F1F5F9; color: #334155; }
+        .btn-save { background: var(--lagoon-teal); color: white; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- Splash Screen -->
+    <div id="splash">
+        <h1>Italia 2026</h1>
+        <p>Andiamo! 🎭</p>
+    </div>
+
+    <header>
+        <div class="header-top">
+            <div class="title">Avanti! 🇮🇹</div>
+            <button class="settings-btn" onclick="toggleSyncModal(true)"><i class="fa-solid fa-arrows-rotate"></i></button>
+        </div>
+        
+        <div class="progress-wrapper">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <div class="progress-text" id="progressText">En route pour l'aventure !</div>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchBar" placeholder="Rechercher un lieu..." oninput="searchPlaces()">
+        </div>
+    </header>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterCategory('Tout', this)">Tout</button>
+        <button class="filter-btn filter-food" onclick="filterCategory('Food', this)">🍕 J'ai faim !</button>
+        <button class="filter-btn" onclick="filterCategory('Mardi', this)">Mardi</button>
+        <button class="filter-btn" onclick="filterCategory('Mercredi', this)">Mercredi</button>
+        <button class="filter-btn" onclick="filterCategory('Jeudi', this)">Jeudi</button>
+        <button class="filter-btn" onclick="filterCategory('Vendredi', this)">Vendredi</button>
+        <button class="filter-btn" onclick="filterCategory('Trévise', this)">Trévise</button>
+        <button class="filter-btn" onclick="filterCategory('Divers', this)">Divers</button>
+    </div>
+
+    <div class="places-list" id="placesList"></div>
+
+    <!-- Bouton Flottant (Ajouter) -->
+    <button class="fab" onclick="toggleAddModal(true)"><i class="fa-solid fa-plus"></i></button>
+
+    <!-- Modal Ajouter un lieu -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h4>Nouvelle découverte ✨</h4>
+            <div class="form-group">
+                <label>Nom du lieu</label>
+                <input type="text" id="newName" placeholder="Ex: Gelateria fantastique...">
+            </div>
+            <div class="form-group">
+                <label>Jour / Catégorie</label>
+                <select id="newCat">
+                    <option value="Mardi">Mardi</option>
+                    <option value="Mercredi">Mercredi</option>
+                    <option value="Jeudi">Jeudi</option>
+                    <option value="Vendredi">Vendredi</option>
+                    <option value="Trévise">Trévise</option>
+                    <option value="Divers">Divers</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-close" onclick="toggleAddModal(false)">Annuler</button>
+                <button class="modal-btn btn-save" onclick="addNewPlace()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Synchro -->
+    <div class="modal" id="syncModal">
+        <div class="modal-content">
+            <h4>Synchro & Sauvegarde 📲</h4>
+            <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 15px;">Copiez ce code pour l'envoyer sur l'autre téléphone.</p>
+            <textarea id="syncDataText" readonly onclick="this.select()" style="font-family: monospace; font-size: 0.75rem; min-height:100px;"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-close" onclick="toggleSyncModal(false)">Fermer</button>
+                <button class="modal-btn btn-save" onclick="importData()">Importer un code</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion du Splash Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 1200);
+        });
+
+        // Données d'origine
+        const rawPlaces = [
+            { id: 1, name: "Campiello Santa Maria Nova", category: "Mardi", desc: "mardi après midi" },
+            { id: 2, name: "Campo San Polo", category: "Mardi", desc: "mardi après midi" },
+            { id: 3, name: "San Polo", category: "Mardi", desc: "Quartier" },
+            { id: 4, name: "Pont du Rialto", category: "Mardi", desc: "mardi après midi" },
+            { id: 5, name: "Basilique Santa Maria Gloriosa dei Frari", category: "Mardi", desc: "mardi après midi" },
+            { id: 6, name: "Grand Canal", category: "Mardi", desc: "mardi après-midi" },
+            { id: 7, name: "Hostaria dai Naneti", category: "Mardi", desc: "Bar / resto" },
+            { id: 8, name: "La Basilique Saint Marc", category: "Mercredi", desc: "mercredi matin" },
+            { id: 9, name: "Piazza San Marco", category: "Mercredi", desc: "mercredi matin" },
+            { id: 10, name: "Pont Des Soupirs", category: "Mercredi", desc: "mercredi matin" },
+            { id: 11, name: "San Marco", category: "Mercredi", desc: "Quartier - repas 🍝" },
+            { id: 12, name: "Palais des Doges", category: "Mercredi", desc: "mercredi matin" },
+            { id: 13, name: "Murano", category: "Mercredi", desc: "Île" },
+            { id: 14, name: "Burano", category: "Mercredi", desc: "Île" },
+            { id: 15, name: "Zattere agli Incurabili", category: "Jeudi", desc: "jeudi après midi" },
+            { id: 16, name: "Dorsoduro", category: "Jeudi", desc: "Quartier" },
+            { id: 17, name: "Basilique Santa Maria della Salute", category: "Jeudi", desc: "jeudi après midi" },
+            { id: 18, name: "Pont de l'Académie", category: "Jeudi", desc: "jeudi après midi" },
+            { id: 19, name: "Librairie Acqua Alta", category: "Jeudi", desc: "jeudi après midi" },
+            { id: 20, name: "Fondamenta de la Misericordia", category: "Jeudi", desc: "jeudi matin" },
+            { id: 21, name: "Cannaregio", category: "Jeudi", desc: "Quartier" },
+            { id: 22, name: "Palais Contarini del Bovolo", category: "Vendredi", desc: "vendredi matin" },
+            { id: 23, name: "Opéra de Venise", category: "Vendredi", desc: "vendredi matin" },
+            { id: 24, name: "Bacareto da Lele", category: "Vendredi", desc: "vendredi midi 🍝" },
+            { id: 25, name: "Campo Santa Margherita", category: "Vendredi", desc: "vendredi après midi" },
+            { id: 26, name: "Loggia dei Cavalieri", category: "Trévise", desc: "Site historique" },
+            { id: 27, name: "Treviso Gare", category: "Trévise", desc: "train 🚆" },
+            { id: 28, name: "Remparts de Trévise", category: "Trévise", desc: "Site historique" },
+            { id: 29, name: "Isola della Pescheria", category: "Trévise", desc: "Île" },
+            { id: 30, name: "Canale dei Buranelli", category: "Trévise", desc: "Attraction" },
+            { id: 31, name: "Fontana delle Tette", category: "Trévise", desc: "Fontaine" },
+            { id: 32, name: "Palazzo dei Trecento", category: "Trévise", desc: "Site historique" },
+            { id: 33, name: "Piazza dei Signori", category: "Trévise", desc: "Site historique" },
+            { id: 34, name: "Antica Osteria Ai Carraresi", category: "Trévise", desc: "resto midi" },
+            { id: 35, name: "Le Beccherie", category: "Trévise", desc: "tiramisu 🍰" },
+            { id: 36, name: "Église Santa Maria del Giglio", category: "Divers", desc: "traghetto 🛶" },
+            { id: 37, name: "C. del Tragheto", category: "Divers", desc: "traghetto 🛶" },
+            { id: 38, name: "Église Santa Sofia", category: "Divers", desc: "traghetto mini gondole" },
+            { id: 39, name: "Rialto Market", category: "Divers", desc: "marché" },
+            { id: 40, name: "Église San Vidal", category: "Divers", desc: "Interpreti Veneziani (32€)" },
+            { id: 41, name: "Campo Santo Stefano", category: "Divers", desc: "souvenirs" },
+            { id: 42, name: "Sestiere Cannaregio", category: "Divers", desc: "souvenirs" },
+            { id: 43, name: "Souvenir da Gabriele", category: "Divers", desc: "souvenirs" },
+            { id: 44, name: "Pylones Venezia", category: "Divers", desc: "souvenirs" },
+            { id: 45, name: "Feelin' Venice", category: "Divers", desc: "souvenirs" },
+            { id: 46, name: "Strada Nova", category: "Divers", desc: "Voie" },
+            { id: 47, name: "Granviale Santa Maria Elisabetta", category: "Divers", desc: "soirée post plage..." }
+        ];
+
+        // Stockage unifié V3
+        let storageKey = 'italyTripV3';
+        let savedData = JSON.parse(localStorage.getItem(storageKey)) || {
+            progress: {}, // { id: { visited, rating, note, img, fav } }
+            customPlaces: [] // Lieux ajoutés par l'utilisateur
+        };
+
+        let currentFilter = 'Tout';
+        let searchQuery = '';
+        let allPlaces = [...rawPlaces, ...savedData.customPlaces];
+
+        // Icônes Intelligentes
+        function determineIcon(name, desc) {
+            const str = (name + " " + desc).toLowerCase();
+            if (str.includes('basilique') || str.includes('église')) return 'fa-church';
+            if (str.includes('pont')) return 'fa-bridge-water';
+            if (str.match(/resto|bar|osteria|bacareto|repas/)) return 'fa-pizza-slice';
+            if (str.includes('tiramisu') || str.includes('🍰')) return 'fa-cake-candles';
+            if (str.includes('île') || str.includes('murano') || str.includes('burano') || str.includes('canal') || str.includes('traghetto')) return 'fa-sailboat';
+            if (str.match(/souvenir|magasin|pylones|librairie/)) return 'fa-bag-shopping';
+            if (str.includes('gare') || str.includes('train')) return 'fa-train';
+            if (str.includes('marché')) return 'fa-store';
+            if (str.match(/opéra|palais|historique/)) return 'fa-building-columns';
+            if (str.includes('découverte')) return 'fa-star';
+            return 'fa-location-dot';
+        }
+
+        // Sauvegarde générique
+        function saveData() {
+            localStorage.setItem(storageKey, JSON.stringify(savedData));
+        }
+
+        // Rendu Principal
+        function render() {
+            allPlaces = [...rawPlaces, ...savedData.customPlaces];
+            const container = document.getElementById('placesList');
+            container.innerHTML = '';
+
+            let filtered = allPlaces;
+
+            // Filtres
+            if (currentFilter === 'Food') {
+                filtered = filtered.filter(p => (p.name + p.desc).toLowerCase().match(/resto|bar|tiramisu|osteria|bacareto|marché|repas|pizza|gelateria/i));
+            } else if (currentFilter !== 'Tout') {
+                filtered = filtered.filter(p => p.category === currentFilter);
+            }
+
+            // Recherche
+            if (searchQuery.trim() !== '') {
+                filtered = filtered.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.toLowerCase().includes(searchQuery.toLowerCase()));
+            }
+
+            // Trier pour mettre les favoris en premier
+            filtered.sort((a, b) => {
+                const favA = savedData.progress[a.id]?.fav ? 1 : 0;
+                const favB = savedData.progress[b.id]?.fav ? 1 : 0;
+                return favB - favA;
+            });
+
+            filtered.forEach((place) => {
+                const data = savedData.progress[place.id] || { visited: false, rating: 0, note: '', img: '', fav: false };
+                const icon = determineIcon(place.name, place.desc);
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ", Italie")}`;
+
+                const card = document.createElement('div');
+                card.className = `place-card ${data.visited ? 'visited' : ''}`;
+
+                card.innerHTML = `
+                    <div class="place-header">
+                        <div class="place-main-info">
+                            <div class="place-icon-box"><i class="fa-solid ${icon}"></i></div>
+                            <div class="place-info">
+                                <h3>${place.name}</h3>
+                                <span class="place-tag">${place.desc} ${data.fav ? '❤️' : ''}</span>
+                            </div>
+                        </div>
+                        <div class="action-corner">
+                            <i class="fa-${data.fav ? 'solid' : 'regular'} fa-heart fav-btn ${data.fav ? 'active' : ''}" onclick="toggleFav(${place.id})"></i>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" onchange="toggleVisited(${place.id}, this, '${place.category}')" ${data.visited ? 'checked' : ''}>
+                                <div class="checkbox-custom"><i class="fa-solid fa-check"></i></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stars">
+                            ${[1,2,3,4,5].map(num => `<i class="fa-solid fa-star ${num <= data.rating ? 'active' : ''}" onclick="setRating(${place.id}, ${num})"></i>`).join('')}
+                        </div>
+                        <div class="buttons-group">
+                            <a href="${mapUrl}" target="_blank" class="btn-action btn-map"><i class="fa-solid fa-location-arrow"></i></a>
+                            <button class="btn-action btn-note" onclick="toggleNotes(${place.id})"><i class="fa-solid fa-pen"></i> Notes</button>
+                        </div>
+                    </div>
+                    <div class="expansion-zone" id="expand-${place.id}">
+                        <textarea placeholder="Prix, souvenirs, avis..." onblur="updateNote(${place.id}, this.value)">${data.note || ''}</textarea>
+                        <div class="photo-uploader">
+                            <span><i class="fa-solid fa-camera"></i> Ajouter une photo souvenir</span>
+                            <input type="file" accept="image/*" onchange="uploadPhoto(${place.id}, this)">
+                        </div>
+                        <img src="${data.img || ''}" class="img-preview" id="prev-${place.id}" style="display: ${data.img ? 'block' : 'none'}">
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            
+            updateProgress();
+            document.getElementById('syncDataText').value = btoa(JSON.stringify({
+                progress: savedData.progress,
+                customPlaces: savedData.customPlaces
+            }));
+        }
+
+        // Actions
+        function ensureInit(id) { if(!savedData.progress[id]) savedData.progress[id] = { visited: false, rating: 0, note: '', img: '', fav: false }; }
+
+        function toggleVisited(id, el, category) {
+            ensureInit(id);
+            savedData.progress[id].visited = el.checked;
+            saveData();
+            
+            // Si le lieu est coché, vérifier si la catégorie entière est terminée
+            if (el.checked) checkCategoryComplete(category);
+            
+            render();
+        }
+
+        function toggleFav(id) {
+            ensureInit(id);
+            savedData.progress[id].fav = !savedData.progress[id].fav;
+            saveData();
+            render();
+        }
+
+        function setRating(id, rating) {
+            ensureInit(id);
+            savedData.progress[id].rating = savedData.progress[id].rating === rating ? 0 : rating;
+            saveData();
+            render();
+        }
+
+        function toggleNotes(id) { document.getElementById(`expand-${id}`).classList.toggle('active'); }
+        function updateNote(id, val) { ensureInit(id); savedData.progress[id].note = val; saveData(); }
+
+        function uploadPhoto(id, input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    ensureInit(id);
+                    savedData.progress[id].img = e.target.result;
+                    saveData();
+                    const img = document.getElementById(`prev-${id}`);
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Catégories & Recherche
+        function filterCategory(cat, btn) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            render();
+        }
+
+        function searchPlaces() {
+            searchQuery = document.getElementById('searchBar').value;
+            render();
+        }
+
+        function updateProgress() {
+            const total = allPlaces.length;
+            const completed = Object.values(savedData.progress).filter(p => p.visited).length;
+            const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            document.getElementById('progressBar').style.width = `${pct}%`;
+            document.getElementById('progressText').innerText = `${completed} / ${total} lieux découverts (${pct}%)`;
+        }
+
+        // Ajouter un lieu manuellement
+        function toggleAddModal(show) { document.getElementById('addModal').classList.toggle('active', show); }
+        
+        function addNewPlace() {
+            const name = document.getElementById('newName').value;
+            const cat = document.getElementById('newCat').value;
+            if(!name.trim()) return alert("Veuillez entrer un nom !");
+            
+            const newPlace = {
+                id: Date.now(), // ID unique
+                name: name,
+                category: cat,
+                desc: "Découverte imprévue ✨"
+            };
+            
+            savedData.customPlaces.push(newPlace);
+            saveData();
+            
+            document.getElementById('newName').value = '';
+            toggleAddModal(false);
+            render();
+        }
+
+        // Célébration (Confettis)
+        function checkCategoryComplete(cat) {
+            if (cat === 'Tout' || cat === 'Divers') return;
+            const catPlaces = allPlaces.filter(p => p.category === cat);
+            const allDone = catPlaces.every(p => savedData.progress[p.id] && savedData.progress[p.id].visited);
+            
+            if (allDone && catPlaces.length > 0) {
+                triggerCelebration();
+            }
+        }
+
+        function triggerCelebration() {
+            const emojis = ['🎉', '🍕', '🥂', '🛶', '✨', '🎭'];
+            for(let i = 0; i < 40; i++) {
+                let confetti = document.createElement('div');
+                confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-50px';
+                confetti.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                confetti.style.zIndex = '9999';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.transition = 'transform 2s ease-in, top 2s ease-in, opacity 2s';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.style.top = '120vh';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.opacity = '0';
+                }, 50);
+                setTimeout(() => confetti.remove(), 2050);
+            }
+        }
+
+        // Modal Synchro
+        function toggleSyncModal(show) { document.getElementById('syncModal').classList.toggle('active', show); }
+        
+        function importData() {
+            const code = prompt("Collez le code de synchronisation :");
+            if(code) {
+                try {
+                    const parsed = JSON.parse(atob(code));
+                    savedData.progress = parsed.progress || {};
+                    savedData.customPlaces = parsed.customPlaces || [];
+                    saveData();
+                    render();
+                    toggleSyncModal(false);
+                    alert("Synchronisation réussie ! 🌟");
+                } catch(e) {
+                    alert("Code invalide, réessayez.");
+                }
+            }
+        }
+
+        // Lancement initial
+        render();
+    </script>
+</body>
+</html>
